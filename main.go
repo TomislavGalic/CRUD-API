@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/TomislavGalic/CRUDAPI/models"
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -18,7 +20,9 @@ var err error
 
 func main() {
 
-	dbURI := "host=localhost user=postgres password=tomis dbname=vehicles port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+	godotenv.Load()
+
+	dbURI := os.Getenv("DB_URL")
 
 	DB, err = gorm.Open(postgres.Open(dbURI), &gorm.Config{})
 	if err != nil {
