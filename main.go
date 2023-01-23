@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -10,7 +9,6 @@ import (
 	"github.com/TomislavGalic/CRUDAPI/models"
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -22,17 +20,6 @@ func init() {
 }
 
 func main() {
-
-	dbURI := "host=localhost user=postgres password=tomis dbname=vehicles port=5432 sslmode=disable TimeZone=Asia/Shanghai"
-
-	DB, err = gorm.Open(postgres.Open(dbURI), &gorm.Config{})
-	if err != nil {
-		log.Fatal(err)
-	} else {
-		fmt.Println("Successfully connected to the database")
-	}
-
-	DB.AutoMigrate(&models.Vehicle{})
 
 	r := mux.NewRouter()
 	r.HandleFunc("/vehicles", GetVehicles).Methods("GET")
