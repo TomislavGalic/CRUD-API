@@ -1,47 +1,16 @@
-package main
+package controllers
 
 import (
-	"fmt"
-	"log"
+	"encoding/json"
 	"net/http"
-	"os"
 
 	"github.com/TomislavGalic/CRUDAPI/models"
 	"github.com/gorilla/mux"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/joho/godotenv"
-	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
-var err error
 
-func main() {
-
-	godotenv.Load()
-
-	dbURI := os.Getenv("DB_URL")
-
-	DB, err = gorm.Open(postgres.Open(dbURI), &gorm.Config{})
-	if err != nil {
-		log.Fatal(err)
-	} else {
-		fmt.Println("Successfully connected to the database")
-	}
-
-	DB.AutoMigrate(&models.Vehicle{})
-
-	r := mux.NewRouter()
-	r.HandleFunc("/getvehicles", controllers.GetVehicles).Methods("GET")
-	r.HandleFunc("/createvehicle", controllers.CreateVehicle).Methods("POST")
-	r.HandleFunc("/getvehicle/{id}", controllers.GetVehicle).Methods("GET")
-	r.HandleFunc("/updatevehicle/{id}", controllers.UpdateVehicle).Methods("PUT")
-	r.HandleFunc("/deletevehicle/{id}", controllers.DeleteVehicle).Methods("DELETE")
-	log.Fatal(http.ListenAndServe(":8080", r))
-}
-
-/*
 func GetVehicles(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
 	var vehicle []models.Vehicle
@@ -84,4 +53,3 @@ func DeleteVehicle(w http.ResponseWriter, r *http.Request) {
 	DB.Delete(&vehicle, params["id"])
 	json.NewEncoder(w).Encode("The user is deleted")
 }
-*/
